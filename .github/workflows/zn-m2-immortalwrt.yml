@@ -23,7 +23,7 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt.git
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: ./config/zn-m2-oc.config
+  CONFIG_FILE: ./config/zn-m2-immortalwrt.config
   DIY_P1_SH: ./scripts/zn-m2-oc/diy-part1.sh
   DIY_P2_SH: ./scripts/zn-m2-oc/diy-part2.sh
   DIY_P3_SH: ./scripts/zn-m2-oc/diy-part3.sh
