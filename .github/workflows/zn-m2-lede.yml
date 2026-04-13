@@ -12,11 +12,10 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede.git
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  # 确保以下路径与你仓库中文件的实际存放位置一致
-  CONFIG_FILE: zn-m2-lede.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
-  DIY_P3_SH: diy-part3.sh
+  CONFIG_FILE: ./config/zn-m2-lede.config
+  DIY_P1_SH: ./scripts/zn-m2-lede/diy-part1.sh
+  DIY_P2_SH: ./scripts/zn-m2-lede/diy-part2.sh
+  DIY_P3_SH: ./scripts/zn-m2-lede/diy-part3.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
