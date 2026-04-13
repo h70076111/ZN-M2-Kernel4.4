@@ -16,7 +16,6 @@ env:
   DIY_P1_SH: ./scripts/zn-m2-lede/diy-part1.sh
   DIY_P2_SH: ./scripts/zn-m2-lede/diy-part2.sh
   DIY_P3_SH: ./scripts/zn-m2-lede/diy-part3.sh
-  UPLOAD_BIN_DIR: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
@@ -35,14 +34,12 @@ jobs:
         curl -s https://raw.githubusercontent.com/immortalwrt/build-scripts/master/init_build_environment.sh | sudo bash
         sudo apt-get install -y rename pigz libfuse-dev upx subversion clang
         sudo timedatectl set-timezone "$TZ"
-        sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /workdir
 
     - name: Clone source code
-      working-directory: /workdir
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        cd openwrt
+        echo "WRK_DIR=$PWD" >> $GITHUB_ENV
 
     - name: Load custom feeds
       run: |
@@ -50,15 +47,14 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
-
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+        ./scripts/feeds update -a
 
     - name: Modify & Install feeds
       run: |
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+        ./scripts/feeds update -i
         ./scripts/feeds install -a
 
     - name: Load custom configuration
@@ -67,19 +63,19 @@ jobs:
         chmod +x $DIY_P3_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P3_SH
+        make defconfig
 
     - name: Download package
       run: |
         cd openwrt
-        make defconfig
-        make download -j8
+        make download -j8 || make download -j1 V=s
         find dl -size -1024c -exec rm -f {} \;
 
     - name: Compile the firmware
       id: compile
       run: |
         cd openwrt
-        make -j$(nproc) || make -j1 || make -j1 V=s
+        make -j$(nproc) || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Organize files
