@@ -20,8 +20,8 @@ permissions:
   actions: write
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede.git
-  REPO_BRANCH: master
+  REPO_URL: https://github.com/VIKINGYFY/immortalwrt.git
+  REPO_BRANCH: main
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: ./config/zn-m2-lede.config
   DIY_P1_SH: ./scripts/zn-m2-lede/diy-part1.sh
